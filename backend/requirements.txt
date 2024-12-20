@@ -1,0 +1,4 @@
+httpx==0.24.1 
+tomd
+requests
+parsel

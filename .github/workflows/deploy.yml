@@ -1,0 +1,79 @@
+name: Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '0 */20 * * *'  # 每小时运行
+  workflow_dispatch:      # 手动触发
+  push:
+    branches: [ main ]   # 当 main 分支有推送时也触发
+  issues:
+    types: [opened]
+
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  # 构建工作
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Fetch articles and update data
+        run: |
+          cd backend
+          python main.py
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pnpm install --no-frozen-lockfile
+
+      - name: Build
+        run: |
+          cd frontend
+          pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./frontend/dist
+
+  # 部署工作
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
