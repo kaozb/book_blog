@@ -74,7 +74,7 @@ jobs:
         with:
           email: me@example.com
           name: GitHub Actions Autocommitter
-          branch: master
+          branch: main
           files: frontend/src/data/articles.json
           force: true
           directory: .
