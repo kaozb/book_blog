@@ -2,6 +2,7 @@ import json
 import os
 import re
 
+
 import requests
 from requests import get
 from parsel import Selector
@@ -54,7 +55,7 @@ def replacestr(text: str) -> str:
 
 
 
-def get_md(url):
+def get_md(url,id):
     # 根据URL选择合适的解析器
     kv = chose_selector(url)
     # 获取网页内容
@@ -81,12 +82,7 @@ def get_md(url):
     with open(output_file, 'r', encoding='utf-8') as f:
         x = f.read()
         cabbc = json.loads(x)
-        try:
-            iii = cabbc[0].get('id')
-            id = int(iii) + 1
-        except Exception as e:
-            id = 1
-        print(id)
+
         xx = {
             "id": id,
             "title": title,
@@ -102,21 +98,46 @@ def get_md(url):
 file_path = "file.json"
 output_file = '../frontend/src/data/articles.json'
 
+
 def geturl():
-    response = requests.get("https://api.github.com/repos/kaozb/book_blog/issues?per_page=1")
+    with open(output_file, 'r', encoding='utf-8') as f:
+        x = f.read()
+        cabbc = json.loads(x)
+        try:
+            iii = cabbc[0].get('id')
+            id = int(iii) + 1
+        except Exception as e:
+            id = 1
+
+    response = requests.get("https://api.github.com/repos/kaozb/book_blog/issues?per_page=50")
     issues = response.json()
-    title = issues[0].get('title')
-    return title
+    titles = []
+    print(id)
+    for issue in issues:
+        number = issue.get("number")
+        if number <= id:
+            continue
+        title = issue.get('title')
+        titles.append({title:number})
+    return titles
 
 if __name__ == '__main__':
-    print()
+
+    for i in geturl():
+        key, value = next(iter(i.items()))
+        print(key, value)
+
     try:
         create_file_with_content()
         with open(file_path, 'r', encoding='utf-8') as file:
             support_web = json.load(file)
         savedir = support_web["文件保存路径"]
-        url = geturl()# https://blog.csdn.net/OneFlow_Official/article/details/144124481
-        get_md(url)
+        urlxx = geturl()# https://blog.csdn.net/OneFlow_Official/article/details/144124481
+        for i in urlxx:
+            url, id = next(iter(i.items()))
+            get_md(url,id)
+
+
 
     except Exception as e:
         print(e)
