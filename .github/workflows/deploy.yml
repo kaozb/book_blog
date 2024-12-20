@@ -68,6 +68,17 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./frontend/dist
+          
+      - name: Commit changes
+        uses: actions-x/commit@v6
+        with:
+          email: me@example.com
+          name: GitHub Actions Autocommitter
+          branch: master
+          files: frontend/src/data/articles.json
+          force: true
+          directory: .
+
 
   # 部署工作
   deploy:
