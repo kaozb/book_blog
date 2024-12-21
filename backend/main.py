@@ -112,9 +112,7 @@ def geturl():
 
 if __name__ == '__main__':
 
-    for i in geturl():
-        key, value = next(iter(i.items()))
-        print(key, value)
+
     create_file_with_content()
     with open(file_path, 'r', encoding='utf-8') as file:
         support_web = json.load(file)
