@@ -124,5 +124,6 @@ if __name__ == '__main__':
         url, id = next(iter(i.items()))
         try:
             get_md(url, id)
+            print(url)
         except Exception as e:
             print(e)
