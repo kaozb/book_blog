@@ -1,8 +1,6 @@
 import json
 import os
 import re
-
-
 import requests
 from requests import get
 from parsel import Selector
@@ -10,16 +8,11 @@ from tomd import Tomd
 from re import sub
 import datetime
 
-
-
 def get_www(url):
-    head = {
-        "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76"
+    head = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76"
     }
     html = get(url=url, headers=head).text
     return html
-
 
 def create_file_with_content():
     content = '''{"文件保存路径":"./","juejin.cn":[".article-title","#article-root"],"linux.cn":["#article_titl","#ct > div > article > div.d"],"cnblogs.com":["#cb_post_title_url > span","#cnblogs_post_body"],"weixin.qq.com":[".rich_media_title",".rich_media_content"],"zhuanlan.zhihu.com":["#root > div > main > div > article > header > h1","#root > div > main > div > article > div.Post-RichTextContainer"],"zhihu.com/question/":[".QuestionHeader-title",".RichContent-inner"],"csdn.net/":[".title-article","article"],"blog.51cto.com/":[".title > h1","#container"],"www.jianshu.com/":["h1","article"]}'''
@@ -30,14 +23,12 @@ def create_file_with_content():
     else:
         print(f"成功加载配置文件")
 
-
 def chose_selector(url):
     # 网站支持的选择器
     for tag, value in support_web.items():
         if tag in url:
             return value
     raise ModuleNotFoundError("该网站不在支持列表里")
-
 
 def replacestr(text: str) -> str:
     # 删除多余的符号
@@ -50,10 +41,6 @@ def replacestr(text: str) -> str:
         except Exception as e:
             print(e)
     return text
-
-
-
-
 
 def get_md(url,id):
     # 根据URL选择合适的解析器
@@ -97,6 +84,7 @@ def get_md(url,id):
 
 file_path = "file.json"
 output_file = '../frontend/src/data/articles.json'
+# output_file = r'\\10.8.6.18\share\iohub\frontend\src\data\articles.json'
 
 
 def geturl():
@@ -111,11 +99,12 @@ def geturl():
 
     response = requests.get("https://api.github.com/repos/kaozb/book_blog/issues?per_page=50")
     issues = response.json()
+    exitnumber = [x.get("number")  for x in issues]
     titles = []
     print(id)
     for issue in issues:
         number = issue.get("number")
-        if number <= id:
+        if number in exitnumber:
             continue
         title = issue.get('title')
         titles.append({title:number})
@@ -136,9 +125,6 @@ if __name__ == '__main__':
         for i in urlxx:
             url, id = next(iter(i.items()))
             get_md(url,id)
-
-
-
     except Exception as e:
         print(e)
-
+    #
