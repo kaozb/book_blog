@@ -92,19 +92,18 @@ def geturl():
         x = f.read()
         cabbc = json.loads(x)
         try:
-            iii = cabbc[0].get('id')
-            id = int(iii) + 1
+            loaclsnumbers = [x.get("id")  for x in cabbc]
         except Exception as e:
-            id = 1
+            loaclsnumbers =[]
 
     response = requests.get("https://api.github.com/repos/kaozb/book_blog/issues?per_page=50")
     issues = response.json()
-    exitnumber = [x.get("number")  for x in issues]
+
     titles = []
-    print(id)
+
     for issue in issues:
         number = issue.get("number")
-        if number in exitnumber:
+        if number in loaclsnumbers:
             continue
         title = issue.get('title')
         titles.append([title,number])
