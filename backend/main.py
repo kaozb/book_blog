@@ -115,16 +115,14 @@ if __name__ == '__main__':
     for i in geturl():
         key, value = next(iter(i.items()))
         print(key, value)
-
-    try:
-        create_file_with_content()
-        with open(file_path, 'r', encoding='utf-8') as file:
-            support_web = json.load(file)
-        savedir = support_web["文件保存路径"]
-        urlxx = geturl()# https://blog.csdn.net/OneFlow_Official/article/details/144124481
-        for i in urlxx:
-            url, id = next(iter(i.items()))
-            get_md(url,id)
-    except Exception as e:
-        print(e)
-    #
+    create_file_with_content()
+    with open(file_path, 'r', encoding='utf-8') as file:
+        support_web = json.load(file)
+    savedir = support_web["文件保存路径"]
+    urlxx = geturl()# https://blog.csdn.net/OneFlow_Official/article/details/144124481
+    for i in urlxx:
+        url, id = next(iter(i.items()))
+        try:
+            get_md(url, id)
+        except Exception as e:
+            print(e)
