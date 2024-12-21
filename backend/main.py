@@ -107,7 +107,7 @@ def geturl():
         if number in exitnumber:
             continue
         title = issue.get('title')
-        titles.append({title:number})
+        titles.append([title,number])
     return titles
 
 if __name__ == '__main__':
@@ -121,7 +121,8 @@ if __name__ == '__main__':
     savedir = support_web["文件保存路径"]
     urlxx = geturl()# https://blog.csdn.net/OneFlow_Official/article/details/144124481
     for i in urlxx:
-        url, id = next(iter(i.items()))
+        print(i)
+        url, id = i[0], i[1]
         try:
             get_md(url, id)
             print(url)
