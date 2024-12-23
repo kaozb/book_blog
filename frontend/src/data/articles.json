@@ -1,5 +1,13 @@
 [
   {
+    "id": 23,
+    "title": "\n\n2024年AIAgets技术栈全面解析\n",
+    "url": "https://mp.weixin.qq.com/s/0MosTOqNIQbmJIS_6J-u5w",
+    "content": "\n**Letta 是一家专注于 AI agents 的公司，提供开源工具和云服务，帮助开发者构建、部署和管理具有记忆能力和工具调用能力的 AI agents。**\n\n原文：https://www.letta.com/blog/ai-agents-stack\n\n（由ChatGPT翻译）\n\n**理解AI Agents 的生态版图**\n\n尽管市面上已经有许多关于代理技术堆栈和代理市场的地图，但我们往往对其分类方式持不同意见，并发现它们很少真实反映开发者实际使用的工具和技术。在过去的几个月中，随着记忆机制、工具使用、安全执行以及部署等方面的进展，代理软件生态系统取得了显著发展。因此，我们决定基于我们一年多的开源AI开发经验和七年以上的AI研究积累，分享我们自己的“代理技术堆栈”。\n\n在基于封闭 API 的模型推理提供商中，OpenAI 和 Anthropic 凭借私有的前沿模型处于领先地位。Together.AI、Fireworks 和 Groq 是一些流行的选项，它们通过收费 API 提供开放权重模型（如 Llama 3）的服务。在本地模型推理提供商中，vLLM 是生产级 GPU 服务负载的领先者，而 SGLang 则是一个面向类似开发者群体的新兴项目。 \n\n对于爱好者（“AI 爱好者”），Ollama 和 LM Studio 是两种运行本地模型的热门选择，特别适合在个人电脑（例如 M 系列的苹果 MacBook）上运行模型。\n\n存储\n\n存储是构建具备状态的 agents 的基础模块之一。agents 的定义依赖于持久化的状态，例如其对话历史、记忆，以及用于 RAG（检索增强生成）的外部数据源。 \n\n向量数据库在存储 agents 的“外部记忆”方面非常流行，例如 Chroma、Weaviate、Pinecone、Qdrant 和 Milvus。它们允许 agents 利用无法放入上下文窗口的大量数据源和对话历史。此外，自上世纪 80 年代起便存在的传统数据库 Postgres，现在也通过 pgvector 扩展支持向量搜索。 \n\n一些基于 Postgres 的公司也在为 agents 提供嵌入式搜索与存储功能，例如 Neon（无服务器 Postgres）和 Supabase，它们同样是这一领域的重要玩家。\n\n工具& 库\n\n标准 AI 聊天机器人与 AI agents 之间的主要区别之一在于 agents 能够调用“工具”（或称“函数”）。在大多数情况下，这种调用机制是由 LLM 生成结构化输出（例如 JSON 对象），指定要调用的函数及其参数来实现的。 \n\n关于 agent 工具执行的一个常见误解是，工具的实际执行并非由 LLM 提供商完成。LLM 的职责仅限于选择调用哪个工具以及提供哪些参数。支持任意工具或参数的 agent 服务必须使用沙盒环境（如 Modal、E2B）来确保安全执行。 \n\n所有 agents 都通过 OpenAI 定义的 JSON 架构调用工具，这意味着不同框架下的 agents 和工具可以实现兼容。例如，Letta agents 能够调用 LangChain、CrewAI 和 Composio 的工具，因为它们遵循相同的架构。正因如此，一个为常用工具服务的生态系统正在快速成长。 \n\nComposio 是一个流行的通用工具库，同时负责授权管理；Browserbase 是用于网页浏览的专用工具；而 Exa 则提供了专注于网络搜索的工具。随着更多 agents 的开发，我们预计工具生态系统将进一步扩大，并引入新功能，例如针对 agents 的认证与访问控制服务。\n\nAgent框架\n\nAgent 框架：编排 LLM 调用与管理 agent 状态\n\n目前，大多数 agent 框架设计的 agents 仅限于存在于编写它们的 Python 脚本或 Jupyter notebook 中。然而，我们认为 agents 的未来应是作为服务存在，部署在本地或云基础设施中，并通过 REST API 提供访问。正如 OpenAI 的 ChatCompletion API 已成为与 LLM 服务交互的行业标准，我们预期未来也会出现一个统一的 Agents API 标准，但这一“赢家”尚未出现。 \n\n将 agents 部署为服务比将 LLM 部署为服务复杂得多，这主要归因于状态管理和安全工具执行的问题。工具及其所需的依赖和环境必须显式存储在数据库中，因为服务需要重新创建运行工具的环境（而当工具与 agents 在同一脚本中运行时，这并不是问题）。 \n\n此外，应用可能需要运行数百万个 agents，每个 agent 的对话历史不断增长。从原型开发到生产阶段，不可避免地需要对 agent 状态进行数据规范化处理，同时通过 REST API 定义 agent 的交互方式。目前，这一过程通常由开发者自行编写 FastAPI 和数据库代码来完成，但我们预计，随着 agents 的成熟，这些功能将更深地集成到框架中。 \n\n---\n\n结论\n\nAgent 技术栈仍处于非常早期的发展阶段，但我们对其生态系统未来的扩展和演变充满期待。\n\n\n\n\n<mp-style-type data-value=\"3\"></mp-style-type>\n",
+    "labels": [],
+    "created_at": "2024-12-23T03:07:29Z"
+  },
+  {
     "id": 22,
     "title": "\n\nRAG：困境求生\n",
     "url": "https://mp.weixin.qq.com/s/g7qE2pOifIMj21W3qJFzNQ",
