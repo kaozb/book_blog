@@ -33,10 +33,10 @@
             <p>{{ getArticleExcerpt(article.content) }}</p>
             <div class="content-fade"></div>
           </div>
-          <div class="article-footer">
+          <!-- <div class="article-footer">
             <span class="date">{{ formatDate(article.created_at) }}</span>
             <a :href="article.url" target="_blank">阅读更多</a>
-          </div>
+          </div> -->
         </article>
       </div>
 
